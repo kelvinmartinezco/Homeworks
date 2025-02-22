@@ -1,0 +1,123 @@
+DESARROLLO ACTIVIDAD ARRAYS
+
+1. at(index) Para acceder a uno en particular.
+let numeros = [10, 20, 30, 40, 50];
+console.log(numeros.at(2)); // 30
+
+2. concat(array) Tienes dos listas y quieres unirlas en una sola.
+let a = [1, 2, 3];
+let b = [4, 5, 6];
+let juntos = a.concat(b);
+console.log(juntos); // [1, 2, 3, 4, 5, 6]
+
+3. copyWithin(target, start, end) Copiemos parte del array en otra posición dentro del mismo array.
+let nums = [5, 10, 15, 20, 25];
+nums.copyWithin(1, 3, 5);
+console.log(nums); // [5, 20, 25, 20, 25]
+
+4. entries() Esto nos da un iterador con los índices y valores del array.
+let frutas = ["manzana", "pera", "mango"];
+let iterador = frutas.entries();
+
+for (let entrada of iterador) {
+    console.log(entrada); 
+}
+// [0, "manzana"]
+// [1, "pera"]
+// [2, "mango"]
+
+5. every(callback) Veamos si todos los números son mayores a 0.
+let positivos = [2, 4, 6, 8];
+console.log(positivos.every(num => num > 0)); // true
+
+6. fill(value, start, end) ¿Quieres llenar un array con un valor específico?
+let vacios = new Array(5).fill(0);
+console.log(vacios); // [0, 0, 0, 0, 0]
+
+7. filter(callback) Seleccionemos solo los números pares.
+let datos = [3, 6, 9, 12, 15];
+let pares = datos.filter(num => num % 2 === 0);
+console.log(pares); // [6, 12]
+
+8. find(callback) Busquemos el primer número mayor a 10.
+console.log(datos.find(num => num > 10)); // 12
+
+9. findIndex(callback) Queremos saber dónde está el primer número mayor a 10.
+console.log(datos.findIndex(num => num > 10)); // 3
+
+10. flat() Tienes un array dentro de otro array y quieres aplanarlo.
+let desordenado = [1, [2, 3], [4, [5, 6]]];
+console.log(desordenado.flat(2)); // [1, 2, 3, 4, 5, 6]
+
+11. forEach(callback) Recorremos un array y mostramos cada número.
+datos.forEach(num => console.log(num));
+// 3
+// 6
+// 9
+// 12
+// 15
+
+12. includes(value) Revisemos si el número 9 está en la lista.
+console.log(datos.includes(9)); // true
+
+13. indexOf(value) Buscamos la posición del número 9.
+console.log(datos.indexOf(9)); // 2
+
+14. join(separator) Convertimos un array en una cadena de texto.
+console.log(datos.join(" - ")); // "3 - 6 - 9 - 12 - 15"
+
+15. map(callback) Multipliquemos cada número por 2.
+let doble = datos.map(num => num * 2);
+console.log(doble); // [6, 12, 18, 24, 30]
+
+16. pop() Quitamos el último elemento.
+datos.pop();
+console.log(datos); // [3, 6, 9, 12]
+
+17. push(value) Agregamos un número al final.
+datos.push(18);
+console.log(datos); // [3, 6, 9, 12, 18]
+
+18. reduce(callback, initialValue) Sumemos todos los números.
+let suma = datos.reduce((acc, num) => acc + num, 0);
+console.log(suma); // 48
+
+19. reverse() Invertimos el orden.
+console.log(datos.reverse()); // [18, 12, 9, 6, 3]
+
+20. shift() Eliminamos el primer elemento.
+datos.shift();
+console.log(datos); // [12, 9, 6, 3]
+
+21. slice(start, end) Tomamos una parte del array.
+console.log(datos.slice(1, 3)); // [9, 6]
+
+22. some(callback) ¿Al menos un número es mayor a 10?
+console.log(datos.some(num => num > 10)); // true
+
+23. sort() Ordenamos el array.
+let desorden = [5, 2, 8, 1, 3];
+console.log(desorden.sort((a, b) => a - b)); // [1, 2, 3, 5, 8]
+
+24. splice(start, deleteCount, items) Eliminamos y reemplazamos elementos.
+desorden.splice(1, 2, 7);
+console.log(desorden); // [1, 7, 5, 8]
+
+25. toString() Convertimos el array en texto.
+console.log(datos.toString()); // "12,9,6,3"
+
+26. unshift(value) Agregamos al inicio.
+datos.unshift(20);
+console.log(datos); // [20, 12, 9, 6, 3]
+
+27. values() Obtenemos los valores con un iterador.
+let iteradorValores = datos.values();
+console.log(iteradorValores.next().value); // 20
+
+
+
+
+
+
+
+
