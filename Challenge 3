@@ -1,0 +1,51 @@
+Challenge 3
+
+1. Create two news buttons: handleSubstract and handleReset
+2. Implement handleSubsstract by substracting from counter
+3. Implement handleReset by setting counter as a default value. Remember the default value is a prop
+4. Use useState hook to show working buttons into the web.
+
+//Componente FirstApp.jsx
+import React, { useState } from 'react';
+
+const FirstApp = ({ value }) => {
+    
+    const [counter, setCounter] = useState( value );
+
+    const handleAdd = () => {
+        setCounter(counter + 1);   
+    }
+
+    const handleSubstract = () => {
+        setCounter(counter - 1);   
+    }
+
+    const handReset = () => {
+        setCounter(value);
+    }
+
+    return (
+      <div>
+        <h1>counter</h1>
+        <button onClick={ () => handleAdd() }>+1</button>
+        <span>{ counter }</span>
+        <button onClick={ () => handleSubstract() }>-1</button>
+        <button onClick={ () => handReset( value ) }>Reset</button>
+      </div>
+    )
+  }
+  
+  export default FirstApp;
+
+
+//Componente main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import FirstApp from './FirstApp'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <FirstApp value={0}/>  
+  </React.StrictMode>
+) 
