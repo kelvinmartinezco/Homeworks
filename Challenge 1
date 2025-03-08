@@ -1,0 +1,27 @@
+CHALLENGE 1
+
+1. Diferencia entre arrow functions y regular functions:
+
+-Sintaxis: Las arrow functions (=>) tienen una sintaxis más corta que la función regular (function).
+-(this) Contexto: Las arrow functions no tienen su propio this, sino que hereda el this del contexto donde fue definida. En función regular se refiere al objeto que la invoca.
+-Uso de arguments: Las arrow functions no tienen acceso a arguments, mientras que las funciones regulares sí.
+-Uso en métodos de objetos: Las arrow functions no son ideales para métodos en objetos, ya que this no hace referencia al objeto. En función regular si puede ser usada como método.
+
+
+2. Crear funciones Flecha y regular, que debe recibir un numero e imprimira en consola si es par o impar:
+
+// Regular Function
+function verificarParOImpar(num) {
+    if (num % 2 === 0) {
+        console.log(`${num} es un número par`);
+    } else {
+        console.log(`${num} es un número impar`);
+    }
+}
+
+// Arrow Function
+const verificarParOImpar = (num) => {
+    console.log(`${num} es ${num % 2 === 0 ? "par" : "impar"}`);
+};
+
+
