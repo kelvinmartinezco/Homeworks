@@ -1,0 +1,75 @@
+:root {
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  background-color: #121212;
+  --primary-color: #1e88e5;
+  --secondary-color: #0d47a1;
+  --background-light: #1e1e1e;
+  --text-light: #ffffff;
+  --text-dark: #b0bec5;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: var(--background-light);
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  text-align: center;
+  color: var(--text-light);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  color: var(--text-light);
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+.book-list {
+  margin-top: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+.book-item {
+  background-color: #333;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 5px;
+  color: var(--text-dark);
+}
