@@ -1,0 +1,282 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'functions' as *;
+@use 'animations';
+
+// Generate utility classes
+@include generate-spacing-utilities;
+@include generate-button-variants;
+
+.container {
+  width: 100%;
+  max-width: 450px;
+  padding: spacing(xl);
+  @include card;
+  @include fade-in(0.6s);
+  
+  @include respond-to(md) {
+    max-width: 500px;
+    padding: spacing(2xl);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: spacing(xl);
+  
+  .title {
+    @include responsive-text(3xl);
+    font-weight: map-get($font-weights, bold);
+    color: neutral(text-primary);
+    margin: 0 0 spacing(sm) 0;
+    @extend %text-gradient;
+    
+    @include respond-to(md) {
+      font-size: modular-scale(4);
+    }
+  }
+  
+  .subtitle {
+    @include responsive-text(base);
+    color: neutral(text-secondary);
+    margin: 0;
+    font-weight: map-get($font-weights, light);
+  }
+}
+
+.form {
+  @include flex-column;
+  gap: spacing(lg);
+  margin-bottom: spacing(xl);
+  
+  .inputGroup {
+    position: relative;
+    
+    .input {
+      @include input-base;
+      width: 100%;
+      box-sizing: border-box;
+      
+      &:focus + .inputLabel,
+      &:not(:placeholder-shown) + .inputLabel {
+        transform: translateY(rem(-25px)) scale(0.8);
+        color: primary();
+      }
+    }
+    
+    .inputLabel {
+      position: absolute;
+      left: spacing(md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: neutral(text-muted);
+      @include responsive-text(base);
+      pointer-events: none;
+      transition: all 0.3s ease(out);
+      background: neutral(light);
+      padding: 0 spacing(sm);
+    }
+    
+    .errorText {
+      display: block;
+      color: primary(accent);
+      @include responsive-text(sm);
+      margin-top: spacing(xs);
+      font-weight: map-get($font-weights, medium);
+    }
+  }
+  
+  .submitButton {
+    @extend %button-base;
+    background: map-get($gradients, primary);
+    color: neutral(text-primary);
+    position: relative;
+    overflow: hidden;
+    z-index: z-index(default);
+    
+    &:hover {
+      transform: translateY(rem(-2px));
+      box-shadow: map-get($shadows, lg);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.5s ease(out);
+    }
+    
+    &:hover::before {
+      left: 100%;
+    }
+    
+    &.loading {
+      background: lighten-color(primary(), 20%);
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+.queueSection {
+  .queueHeader {
+    @include flex-between;
+    margin-bottom: spacing(lg);
+    
+    .queueTitle {
+      @include responsive-text(xl);
+      font-weight: map-get($font-weights, semibold);
+      color: neutral(text-primary);
+      margin: 0;
+    }
+    
+    .queueCount {
+      background: map-get($gradients, accent);
+      color: contrast-color(primary(accent));
+      padding: spacing(sm) spacing(md);
+      border-radius: map-get($border-radius, xl);
+      @include responsive-text(sm);
+      font-weight: map-get($font-weights, bold);
+    }
+  }
+  
+  .queueList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    @include flex-column;
+    gap: spacing(md);
+  }
+  
+  .queueItem {
+    background: lighten-color(neutral(medium), 5%);
+    padding: spacing(lg);
+    border-radius: map-get($border-radius, lg);
+    border-left: 4px solid primary();
+    position: relative;
+    @include slide-up(0.5s);
+    @include staggered-animation(0.1s);
+    transition: all 0.3s ease(out);
+    
+    // Use @each to generate different colors for queue positions
+    @include generate-queue-colors;
+    
+    &:hover {
+      transform: translateX(spacing(sm));
+      box-shadow: map-get($shadows, md);
+    }
+    
+    .itemHeader {
+      @include flex-between;
+      margin-bottom: spacing(sm);
+      
+      .itemPosition {
+        background: primary();
+        color: contrast-color(primary());
+        width: rem(30px);
+        height: rem(30px);
+        border-radius: 50%;
+        @include flex-center;
+        @include responsive-text(sm);
+        font-weight: map-get($font-weights, bold);
+      }
+      
+      .itemName {
+        @include responsive-text(lg);
+        font-weight: map-get($font-weights, semibold);
+        color: neutral(text-primary);
+        margin: 0;
+      }
+    }
+    
+    .itemAmount {
+      @include responsive-text(xl);
+      font-weight: map-get($font-weights, bold);
+      color: primary(accent);
+      margin: 0;
+      
+      .currency {
+        @include responsive-text(base);
+        color: neutral(text-secondary);
+      }
+    }
+    
+    .itemTime {
+      @include responsive-text(sm);
+      color: neutral(text-muted);
+      margin-top: spacing(sm);
+      font-style: italic;
+    }
+  }
+  
+  .emptyState {
+    text-align: center;
+    padding: spacing(2xl);
+    color: neutral(text-muted);
+    
+    .emptyIcon {
+      font-size: modular-scale(5);
+      margin-bottom: spacing(md);
+      opacity: 0.5;
+      @include pulse(3s);
+    }
+    
+    .emptyText {
+      @include responsive-text(lg);
+      margin: 0;
+    }
+  }
+}
+
+// Error state using conditional styling
+.error {
+  .input {
+    border-color: primary(accent) !important;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(primary(accent), 0.3) !important;
+    }
+  }
+}
+
+// Success state
+.success {
+  .submitButton {
+    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%) !important;
+    
+    &:hover {
+      background: linear-gradient(135deg, #66bb6a 0%, #388e3c 100%) !important;
+    }
+  }
+}
+
+// Generate responsive utilities using @for
+@for $i from 1 through 5 {
+  .delay-#{$i} {
+    animation-delay: #{$i * 0.1s};
+  }
+}
+
+// Generate opacity utilities using @each
+@each $opacity in (10, 25, 50, 75, 90) {
+  .opacity-#{$opacity} {
+    opacity: #{$opacity / 100};
+  }
+}
+

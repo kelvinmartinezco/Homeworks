@@ -1,0 +1,191 @@
+@use 'variables' as *;
+
+// Enhanced mixins using @extend
+@mixin button-variant($variant) {
+  @extend %button-base;
+  
+  @if map-has-key($button-variants, $variant) {
+    $config: map-get($button-variants, $variant);
+    background: map-get($config, background);
+    color: map-get($neutral-colors, text-primary);
+    
+    &:hover {
+      transform: map-get($config, hover-transform);
+      box-shadow: map-get($shadows, lg);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  } @else {
+    @warn "Unknown button variant: #{$variant}";
+  }
+}
+
+// Generate button classes using @each
+@mixin generate-button-variants {
+  @each $variant, $config in $button-variants {
+    .button--#{$variant} {
+      @include button-variant($variant);
+    }
+  }
+}
+
+// Generate spacing utilities using @for
+@mixin generate-spacing-utilities {
+  @for $i from 1 through 10 {
+    .mt-#{$i} {
+      margin-top: #{$i * 0.25}rem;
+    }
+    .mb-#{$i} {
+      margin-bottom: #{$i * 0.25}rem;
+    }
+    .p-#{$i} {
+      padding: #{$i * 0.25}rem;
+    }
+  }
+}
+
+// Conditional mixin for responsive design
+@mixin responsive-text($size: base) {
+  font-size: map-get($font-sizes, $size);
+  
+  @if $size == xs or $size == sm {
+    line-height: 1.4;
+  } @else if $size == base or $size == lg {
+    line-height: 1.6;
+  } @else {
+    line-height: 1.2;
+  }
+}
+
+// Generate queue item colors using @each
+@mixin generate-queue-colors {
+  @each $position, $color in $queue-item-colors {
+    &:nth-child(#{$position}n) {
+      border-left-color: $color;
+      
+      .itemPosition {
+        background: $color;
+      }
+      
+      &:hover {
+        border-left-color: darken($color, 10%);
+      }
+    }
+  }
+}
+
+// Animation delay generator using @for and interpolation
+@mixin staggered-animation($base-delay: 0.1s) {
+  @for $i from 1 through length($animation-delays) {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$base-delay * $i};
+    }
+  }
+}
+
+// Math operations mixin
+@mixin dynamic-grid($columns: 3, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+  
+  // Calculate responsive breakpoints using math
+  @media (max-width: #{$columns * 200px}) {
+    grid-template-columns: repeat(#{$columns - 1}, 1fr);
+  }
+  
+  @media (max-width: #{($columns - 1) * 200px}) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// String interpolation and conditional styling
+@mixin theme-aware($property, $light-value, $dark-value: null) {
+  #{$property}: $light-value;
+  
+  @if $dark-value {
+    @media (prefers-color-scheme: dark) {
+      #{$property}: $dark-value;
+    }
+  }
+}
+
+// Responsive mixins
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// Flexbox mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Input mixins
+@mixin input-base {
+  padding: map-get($spacing, md);
+  border: 2px solid transparent;
+  border-radius: map-get($border-radius, md);
+  background-color: map-get($neutral-colors, light);
+  color: map-get($neutral-colors, text-primary);
+  font-size: map-get($font-sizes, base);
+  transition: all 0.3s ease;
+  
+  &::placeholder {
+    color: map-get($neutral-colors, text-muted);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: map-get($primary-colors, main);
+    box-shadow: 0 0 0 3px rgba(map-get($primary-colors, main), 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+// Card mixins
+@mixin card {
+  @extend %card-base;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: map-get($gradients, primary);
+  }
+}
+
+// Animation mixins
+@mixin fade-in($duration: 0.3s) {
+  animation: fadeIn $duration ease-in-out;
+}
+
+@mixin slide-up($duration: 0.5s) {
+  animation: slideUp $duration ease-out;
+}
+
+@mixin pulse($duration: 2s) {
+  animation: pulse $duration infinite;
+}
+

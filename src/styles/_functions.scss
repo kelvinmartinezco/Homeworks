@@ -1,0 +1,129 @@
+@use 'variables' as *;
+@use 'sass:math';
+@use 'sass:string';
+@use 'sass:list';
+
+// Enhanced color functions with math
+@function get-color($color-map, $key) {
+  @return map-get($color-map, $key);
+}
+
+@function primary($key: main) {
+  @return get-color($primary-colors, $key);
+}
+
+@function neutral($key: dark) {
+  @return get-color($neutral-colors, $key);
+}
+
+// Advanced mathematical functions
+@function power($base, $exponent) {
+  $result: 1;
+  @for $i from 1 through $exponent {
+    $result: $result * $base;
+  }
+  @return $result;
+}
+
+@function fibonacci($n) {
+  @if $n <= 2 {
+    @return 1;
+  }
+  @return fibonacci($n - 1) + fibonacci($n - 2);
+}
+
+// Spacing functions with calculations
+@function spacing($key) {
+  @return map-get($spacing, $key);
+}
+
+@function dynamic-spacing($multiplier: 1) {
+  @return spacing(md) * $multiplier;
+}
+
+// Font size functions with modular scale
+@function font-size($key) {
+  @return map-get($font-sizes, $key);
+}
+
+@function modular-scale($step, $base: 1rem, $ratio: 1.25) {
+  @return $base * power($ratio, $step);
+}
+
+// Calculate rem from px with validation
+@function rem($px) {
+  @if math.unit($px) != 'px' {
+    @error "Expected px unit, got #{math.unit($px)}";
+  }
+  @return math.div($px, 16px) * 1rem;
+}
+
+// Color manipulation functions
+@function lighten-color($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function darken-color($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@function contrast-color($color) {
+  @if lightness($color) > 50% {
+    @return #000;
+  } @else {
+    @return #fff;
+  }
+}
+
+// String manipulation functions
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+  
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+  
+  @return $string;
+}
+
+@function kebab-case($string) {
+  @return str-replace(string.to-lower-case($string), ' ', '-');
+}
+
+// List manipulation functions
+@function reverse-list($list) {
+  $result: ();
+  @for $i from length($list) through 1 {
+    $result: list.append($result, list.nth($list, $i));
+  }
+  @return $result;
+}
+
+// Grid calculation functions
+@function grid-width($columns, $gap: 1rem) {
+  @return calc(#{100% / $columns} - #{$gap});
+}
+
+// Z-index management function
+@function z-index($layer) {
+  $z-layers: (
+    'modal': 1000,
+    'dropdown': 100,
+    'header': 50,
+    'default': 1
+  );
+  
+  @return map-get($z-layers, $layer);
+}
+
+// Timing function generator
+@function ease($type: 'out') {
+  $easings: (
+    'in': cubic-bezier(0.55, 0.055, 0.675, 0.19),
+    'out': cubic-bezier(0.215, 0.61, 0.355, 1),
+    'in-out': cubic-bezier(0.645, 0.045, 0.355, 1)
+  );
+  
+  @return map-get($easings, $type);
+}
+
